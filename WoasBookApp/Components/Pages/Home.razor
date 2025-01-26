@@ -1,31 +1,97 @@
 ﻿@page "/"
 @inject IJSRuntime js
 @using WoasBookApp.Services
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @using BlazorBootstrap
 @rendermode InteractiveServer
 
 @using Bogus
 
-<button @onclick="() => Test(10)">Add 10 books</button>
+<div class="toolbar">
+    <Dropdown Color="DropdownColor.Info">
+        <DropdownToggleButton>Locale: @_displayLocale</DropdownToggleButton>
+        <DropdownMenu>
+            @{
+                foreach (var lc in DisplayLocalesClass.DisplayLocales){
+                    <DropdownItem @onclick="(() => SetGeneratorLocale(lc.Key))" Type="DropdownItemType.Button">@lc.Value</DropdownItem>
+                }
+            }
+        </DropdownMenu>
+    </Dropdown>
+
+    <div style="display: flex; flex-direction: row">
+        <NumberInput TValue="int" ValueChanged="((value) => SetGeneratorSeed(value))" Value="userSeed" ValueExpression="() => userSeed" />
+        <Button @onclick="(() => RandomizeSeed())" Color="ButtonColor.Info"><Icon Name="IconName.Shuffle"/></Button>
+    </div>
+
+    <Button Color="ButtonColor.Primary" @onclick="() => AddBooks(10)">Add Books</Button>
+</div>
+
 
 <Accordion>
     <Virtualize Context="book" Items="allBooks">
         <AccordionItem Title="@($"{book.Title} - {book.Author}")">
             <Content>
-                @book.Description
+                <div class ="bookAccordionItem">
+                    <div class="bookItemLeft">
+                        <Image Src="@book.CoverURI" Class="rounded"/>
+                    </div>
+                    <div class="bookItemRight">
+                        <div class="bookInfoTop">
+                            <h2>@book.Title</h2>
+                            <p>Author: @book.Author - @book.Year</p>
+                            <p>@book.Genre</p>
+                            <p>@book.Description</p>
+                        </div>
+                        <div class="bookInfoBottom">
+                            <p>ISBN: @string.Join("",book.ISBN)</p>
+                        </div>
+                    </div>
+                </div>
             </Content>
         </AccordionItem>
     </Virtualize>
 </Accordion>
 
-
 @code {
+    public int userSeed = 0;
+    public string generatorLocale = "en";
+
+    public string _displayLocale;
+
     public List<Book> allBooks = new List<Book>();
 
-    public BookFaker bookFaker = new BookFaker(123, Locales.fr);
+    public BookFaker bookFaker;
 
+    protected override void OnInitialized()
+    {
+        SetGeneratorLocale("en");
+    }
 
-    void Test(int N)
+    public void UpdateGenerator(){
+        allBooks.Clear();
+        bookFaker = new BookFaker(userSeed, generatorLocale);
+        StateHasChanged();
+        AddBooks(30);
+    }
+
+    public void SetGeneratorLocale(string locale){
+        generatorLocale = locale;
+        _displayLocale = DisplayLocalesClass.DisplayLocales[locale];
+        UpdateGenerator();
+    }
+
+    public void SetGeneratorSeed(int seed){
+        userSeed = seed;
+        UpdateGenerator();
+    }
+
+    public void RandomizeSeed(){
+        userSeed = (new Random()).Next();
+        UpdateGenerator();
+    }
+
+    void AddBooks(int N)
     {
         allBooks.AddRange(bookFaker.Generate(N));
         Console.WriteLine($"Added {N} more books");

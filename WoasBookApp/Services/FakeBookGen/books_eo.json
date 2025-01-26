@@ -1,0 +1,350 @@
+[
+    {
+        "Title": "La Sekreto de la Perdita Urbo",
+        "Description": "Grupo da esploristoj vojaĝas al ĝangalo por trovi antikvan urbon plenan je enigmoj kaj danĝeroj.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "Stela Vojaĝo",
+        "Description": "Kosmoŝipa skipo alfrontas neatenditajn obstaklojn survoje al nova planedo.",
+        "Author": "Klara Novak",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "Ombroj de la Pasinteco",
+        "Description": "Juna virino revenas al sia naskiĝurbo por malkaŝi sekreton, kiu persekutas ŝian familion.",
+        "Author": "Marta Petroviĉ",
+        "Genre": "Mistero"
+    },
+    {
+        "Title": "La Magio de Antikvuloj",
+        "Description": "Juna magiisto malkovras antikvan artefakton, kiu povas ŝanĝi la sorton de la mondo.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "Amo Sub la Steloj",
+        "Description": "Du amantoj superas ĉiujn obstaklojn por esti kune.",
+        "Author": "Elena Kovács",
+        "Genre": "Amorromano"
+    },
+    {
+        "Title": "La Enigmo de la Dezerta Insulo",
+        "Description": "Grupo da amikoj troviĝas sur neloĝata insulo kun neatenditaj malkovroj.",
+        "Author": "Ivan Markov",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "Galaksiaj Militoj",
+        "Description": "La galaksio estas en milito, kaj nur unu heroo povas halti la detruon.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Fantomoj de la Malnova Domo",
+        "Description": "Familio transloĝiĝas al malnova domo, kie strangaĵoj komencas okazi.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Vojo de la Militisto",
+        "Description": "Juna militisto komencas vojaĝon por savi sian vilaĝon de malamikoj.",
+        "Author": "Aleksandr Ivanov",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "Sekretoj de la Pasinteco",
+        "Description": "Ĵurnalisto esploras malnovan enigmon, kiu povas ŝanĝi ŝian vivon.",
+        "Author": "Lina Kovács",
+        "Genre": "Mistero"
+    },
+    {
+        "Title": "La Ĉiela Urbo",
+        "Description": "Grupo da aventuristoj malkovras urbon flosantan en la ĉielo.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Libro de Forgesitaj Sorĉoj",
+        "Description": "Juna sorĉisto trovas libron kun potencaj sorĉoj, kiuj povas ŝanĝi la mondon.",
+        "Author": "Klara Novak",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Mistero de la Malnova Kastelo",
+        "Description": "Grupo da amikoj esploras malnovan kastelon, kie ili trovas strangajn aferojn.",
+        "Author": "Ivan Markov",
+        "Genre": "Mistero"
+    },
+    {
+        "Title": "La Vojo al la Steloj",
+        "Description": "Kosmoŝipa skipo vojaĝas al malproksima stelsistemo por trovi novan hejmon.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Antikva Mapo",
+        "Description": "Grupo da esploristoj sekvas antikvan mapon al trezoro kaŝita en la dezerto.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ĝardeno",
+        "Description": "Juna knabino malkovras ĝardenon, kie ĉio, kion ŝi deziras, realiĝas.",
+        "Author": "Elena Kovács",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Teatro",
+        "Description": "Grupo da aktoroj alfrontas fantomon en malnova teatro.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Perdita Trezoro",
+        "Description": "Grupo da amikoj serĉas trezoron kaŝitan en antikva ruino.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Stela Portalo",
+        "Description": "Kosmoŝipa skipo malkovras portalon al alia dimensio.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Arbaro",
+        "Description": "Grupo da esploristoj vojaĝas al malnova arbaro, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Amuleto",
+        "Description": "Juna knabo trovas amuleton, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Lernejo",
+        "Description": "Grupo da studentoj alfrontas fantomon en malnova lernejo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Manuskripto",
+        "Description": "Grupo da esploristoj malkovras malnovan manuskripton kun sekretaj mesaĝoj.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Mistero"
+    },
+    {
+        "Title": "La Vojo al la Stelo",
+        "Description": "Kosmoŝipa skipo vojaĝas al malproksima stelo por trovi novan hejmon.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Urbo",
+        "Description": "Grupo da esploristoj vojaĝas al malnova urbo, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ŝtono",
+        "Description": "Juna knabo trovas ŝtonon, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Muzeo",
+        "Description": "Grupo da vizitantoj alfrontas fantomon en malnova muzeo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Mapo",
+        "Description": "Grupo da esploristoj sekvas malnovan mapon al trezoro kaŝita en la dezerto.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Stela Pordego",
+        "Description": "Kosmoŝipa skipo malkovras pordegon al alia dimensio.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Monto",
+        "Description": "Grupo da esploristoj vojaĝas al malnova monto, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ringo",
+        "Description": "Juna knabo trovas ringon, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Kastelo",
+        "Description": "Grupo da vizitantoj alfrontas fantomon en malnova kastelo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Skribaĵo",
+        "Description": "Grupo da esploristoj malkovras malnovan skribaĵon kun sekretaj mesaĝoj.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Mistero"
+    },
+    {
+        "Title": "La Vojo al la Stelo",
+        "Description": "Kosmoŝipa skipo vojaĝas al malproksima stelo por trovi novan hejmon.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Urbo",
+        "Description": "Grupo da esploristoj vojaĝas al malnova urbo, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ŝtono",
+        "Description": "Juna knabo trovas ŝtonon, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Muzeo",
+        "Description": "Grupo da vizitantoj alfrontas fantomon en malnova muzeo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Mapo",
+        "Description": "Grupo da esploristoj sekvas malnovan mapon al trezoro kaŝita en la dezerto.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Stela Pordego",
+        "Description": "Kosmoŝipa skipo malkovras pordegon al alia dimensio.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Monto",
+        "Description": "Grupo da esploristoj vojaĝas al malnova monto, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ringo",
+        "Description": "Juna knabo trovas ringon, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Kastelo",
+        "Description": "Grupo da vizitantoj alfrontas fantomon en malnova kastelo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Skribaĵo",
+        "Description": "Grupo da esploristoj malkovras malnovan skribaĵon kun sekretaj mesaĝoj.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Mistero"
+    },
+    {
+        "Title": "La Vojo al la Stelo",
+        "Description": "Kosmoŝipa skipo vojaĝas al malproksima stelo por trovi novan hejmon.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Urbo",
+        "Description": "Grupo da esploristoj vojaĝas al malnova urbo, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ŝtono",
+        "Description": "Juna knabo trovas ŝtonon, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Muzeo",
+        "Description": "Grupo da vizitantoj alfrontas fantomon en malnova muzeo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Mapo",
+        "Description": "Grupo da esploristoj sekvas malnovan mapon al trezoro kaŝita en la dezerto.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Stela Pordego",
+        "Description": "Kosmoŝipa skipo malkovras pordegon al alia dimensio.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Monto",
+        "Description": "Grupo da esploristoj vojaĝas al malnova monto, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ringo",
+        "Description": "Juna knabo trovas ringon, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Kastelo",
+        "Description": "Grupo da vizitantoj alfrontas fantomon en malnova kastelo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Skribaĵo",
+        "Description": "Grupo da esploristoj malkovras malnovan skribaĵon kun sekretaj mesaĝoj.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Mistero"
+    },
+    {
+        "Title": "La Vojo al la Stelo",
+        "Description": "Kosmoŝipa skipo vojaĝas al malproksima stelo por trovi novan hejmon.",
+        "Author": "Serĝo Popov",
+        "Genre": "Sciencfikcio"
+    },
+    {
+        "Title": "La Sekreto de la Malnova Urbo",
+        "Description": "Grupo da esploristoj vojaĝas al malnova urbo, kie ili trovas misterojn.",
+        "Author": "Ludoviko Zamenhof",
+        "Genre": "Adventuro"
+    },
+    {
+        "Title": "La Magia Ŝtono",
+        "Description": "Juna knabo trovas ŝtonon, kiu donas al li supernaturajn povojn.",
+        "Author": "Viktor Ĉefka",
+        "Genre": "Fantasto"
+    },
+    {
+        "Title": "La Fantomo de la Malnova Muzeo",
+        "Description": "Grupo da vizitantoj alfrontas fantomon en malnova muzeo.",
+        "Author": "Nadia Sokolov",
+        "Genre": "Teroro"
+    },
+    {
+        "Title": "La Enigmo de la Malnova Mapo",
+        "Description": "Grupo da esploristoj sekvas malnovan mapon al trezoro kaŝita en la dezerto.",
+        "Author": "Marko Petroviĉ",
+        "Genre": "Adventuro"
+    }
+]
