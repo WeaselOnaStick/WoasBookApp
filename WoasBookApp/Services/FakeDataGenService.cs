@@ -33,7 +33,7 @@ namespace WoasBookApp.Services
             Randomizer.Seed = new Random(seed);
             Locale = LocaleToString[locale];
             StrictMode(true);
-            RuleFor(b => b.Title, f => String.Join(" ",f.Lorem.Words(3)));
+            RuleFor(b => b.Title, f => String.Join(" ", f.Lorem.Words(3)));
             RuleFor(b => b.Description, f => f.Lorem.Paragraph());
             RuleFor(b => b.Author, f => f.Name.FullName());
             RuleFor(b => b.Genre, f => f.Lorem.Word());
