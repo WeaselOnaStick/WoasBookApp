@@ -24,3 +24,22 @@
 .mud-input-number-control {
     max-width: 10rem !important
 }
+
+.book-item-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 6px;
+}
+
+.book-item-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book-info-start {
+    display: flex;
+    flex-direction: column;
+    row-gap: 6px;
+}

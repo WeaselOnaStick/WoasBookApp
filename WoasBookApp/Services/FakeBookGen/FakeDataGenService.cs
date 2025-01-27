@@ -58,39 +58,34 @@ namespace WoasBookApp.Services.FakeBookGen
         {
             string curDir = Directory.GetCurrentDirectory();
             string filepath = Path.Combine(curDir, @$"Services\FakeBookGen\books_{locale}.json");
-            if (File.Exists(filepath))
-                auxBooks = JsonSerializer.Deserialize<List<BookAux>>(File.ReadAllText(filepath));
-            else
-                auxBooks = new List<BookAux>() {
+            if (!File.Exists(filepath)) return;
+                
+            auxBooks = JsonSerializer.Deserialize<List<BookAux>>(File.ReadAllText(filepath));
+        }
+
+        private void LoadAuxReviews(string locale = "en")
+        {
+            string curDir = Directory.GetCurrentDirectory();
+            string filepath = Path.Combine(curDir, @$"Services\FakeBookGen\reviews_{locale}.json");
+            if (!File.Exists(filepath)) return;
+            
+            var jsrevs = JsonSerializer.Deserialize<Dictionary<string,List<string>>>(File.ReadAllText(filepath));
+            auxCritics = jsrevs["critics"];
+            auxReviewTexts = jsrevs["reviews"];
+        }
+
+        public BookFaker(int seed, float likes, float reviews, string locale = "en")
+        {
+            auxBooks = new List<BookAux>() {
                     new BookAux() {
                         Title       = "UNSUPPORTED LOCALE",
                         Description = "UNSUPPORTED LOCALE",
                         Author      = "UNSUPPORTED LOCALE",
                         Genre       = "UNSUPPORTED LOCALE" } };
-        }
-
-        private void LoadUaxReviews(string locale = "en")
-        {
-            string curDir = Directory.GetCurrentDirectory();
-            string filepath = Path.Combine(curDir, @$"Services\FakeBookGen\reviews_{locale}.json");
-            if (File.Exists(filepath))
-            {
-                var jsrevs = JsonSerializer.Deserialize<Dictionary<string,List<string>>>(File.ReadAllText(filepath));
-                auxCritics = jsrevs["critics"];
-                auxReviewTexts = jsrevs["reviews"];
-            }
-            else
-            {
-                auxCritics = new List<string>() { "UNSUPPORTED LOCALE" };
-                auxReviewTexts = new List<string>() { "UNSUPPORTED LOCALE" };
-            }
-        }
-
-        public BookFaker(int seed, float likes, float reviews, string locale = "en")
-        {
-            auxBooks = new List<BookAux>();
             LoadAuxBookData(locale);
-            auxCritics = new List<string>();
+            auxCritics = new List<string>() { "UNSUPPORTED LOCALE" };
+            auxReviewTexts = new List<string>() { "UNSUPPORTED LOCALE" };
+            LoadAuxReviews(locale);
 
             Randomizer.Seed = new Random(($"{seed}{likes}{reviews}{locale}").GetHashCode());
 
@@ -107,24 +102,24 @@ namespace WoasBookApp.Services.FakeBookGen
             RuleFor(b => b.Likes, f => GenerateRandomIntAtleast(f, likes));
         }
 
-        private List<Tuple<string, string>> GenerateReviews(Faker f, float amt)
+        private List<ReviewAux> GenerateReviews(Faker f, float amt)
         {
             var res = new List<ReviewAux>();
             var reviewsAmt = GenerateRandomIntAtleast(f, amt);
             res.AddRange(
                 Enumerable.Range(0, reviewsAmt).
-                Select(()=> new ReviewAux()
-            {
-                    Critic = auxReviews
-            }))
+                Select(_ => new ReviewAux { 
+                    Critic = f.PickRandom(auxCritics), 
+                    Text = f.PickRandom(auxReviewTexts) 
+                }));
             return res;
         }
 
         private int GenerateRandomIntAtleast(Faker f, float amt)
         {
             int res = (int)Math.Floor(amt);
-            res += f.Random.Float() > (amt - Math.Floor(amt)) ? 1 : 0;
-
+            res += f.Random.Float() < (amt - Math.Floor(amt)) ? 1 : 0;
+            Console.WriteLine($"GRIAL: ({amt}) => {res}");
             return res;
         }
 
