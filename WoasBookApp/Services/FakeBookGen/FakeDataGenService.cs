@@ -9,30 +9,30 @@ namespace WoasBookApp.Services.FakeBookGen
 {
     public record Book
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Author { get; set; }
-        public string Genre { get; set; }
-        public string Publisher { get; set; }
-        public int Year { get; set; }
-        public string ISBN { get; set; }
-        public string CoverURI { get; set; }
-        public int Likes { get; set; }
-        public List<ReviewAux> Reviews { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public string? Author { get; set; }
+        public string? Genre { get; set; }
+        public string? Publisher { get; set; }
+        public int? Year { get; set; }
+        public string? ISBN { get; set; }
+        public string? CoverURI { get; set; }
+        public int? Likes { get; set; }
+        public List<ReviewAux>? Reviews { get; set; }
     }
 
     public record BookAux
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Author { get; set; }
-        public string Genre { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public string? Author { get; set; }
+        public string? Genre { get; set; }
     };
 
     public record ReviewAux
     {
-        public string Critic { get; set; }
-        public string Text { get; set; }
+        public string? Critic { get; set; }
+        public string? Text { get; set; }
     }
 
     public static class DisplayLocalesClass
@@ -49,7 +49,7 @@ namespace WoasBookApp.Services.FakeBookGen
 
     public class BookFaker : Faker<Book>
     {
-        private List<string> auxPublishers = JsonSerializer.Deserialize<List<string>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), @"Services\FakeBookGen\publishers.json")));
+        private List<string> auxPublishers;
         private List<BookAux> auxBooks;
         private List<string> auxCritics;
         private List<string> auxReviewTexts;
@@ -86,6 +86,8 @@ namespace WoasBookApp.Services.FakeBookGen
             auxCritics = new List<string>() { "UNSUPPORTED LOCALE" };
             auxReviewTexts = new List<string>() { "UNSUPPORTED LOCALE" };
             LoadAuxReviews(locale);
+
+            auxPublishers = JsonSerializer.Deserialize<List<string>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), @"Services\FakeBookGen\publishers.json")));
 
             Randomizer.Seed = new Random(seed);
 
