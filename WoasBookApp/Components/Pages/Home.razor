@@ -4,7 +4,6 @@
 
 @using WoasBookApp.Services.FakeBookGen
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-@using BlazorBootstrap
 
 @inject IJSRuntime JS
 
@@ -58,20 +57,22 @@
 </div>
 
 <div id="books-table">
-    <MudDataGrid Items="allBooks" ReadOnly="true" Dense="true">
+    <MudDataGrid Items="allBooks" ReadOnly="true" Dense="true" Breakpoint="Breakpoint.None">
         <Columns>
             <HierarchyColumn T="Tuple<int, Book>"/>
-            <PropertyColumn Title="#" Property="b=> b.Item1" />
-            <PropertyColumn Title="ISBN" Property="b => b.Item2.ISBN" />
+            <PropertyColumn Title="#" Property="b=> b.Item1" Style="max-width: 3rem"/>
+            <PropertyColumn Title="ISBN" Property="b => b.Item2.ISBN" Style="min-width: 10rem !important"/>
             <PropertyColumn Title="Title" Property="b => b.Item2.Title" />
             <PropertyColumn Title="Author(s)" Property="b => b.Item2.Author" />
             <PropertyColumn Title="Publisher" Property='b => $"{b.Item2.Publisher}, {b.Item2.Year}"' />
+            <PropertyColumn Title="Likes" Property="b => b.Item2.Likes" Style="max-width: 4rem" />
+            <PropertyColumn Title="Reviews" Property="b => b.Item2.Reviews.Count" Style="max-width: 4rem !important" />
 
         </Columns>
         <ChildRowContent>
             <div class="book-card-item">
                 <div class="book-item-left">
-                    <Image Src="@context.Item.Item2.CoverURI" Class="rounded" />
+                    <MudImage Src="@context.Item.Item2.CoverURI" class="rounded"/>
                     <MudChip Color="Color.Secondary" Icon="@Icons.Material.Filled.ThumbUp">@context.Item.Item2.Likes Likes</MudChip>
                 </div>
                 <div class="book-item-right">
@@ -83,14 +84,16 @@
                         <p>ISBN: @context.Item.Item2.ISBN</p>
                     </div>
                     <MudExpansionPanels Outlined="true">
-                        <MudExpansionPanel Text="Reviews">
+                        <MudExpansionPanel Text="@(context.Item.Item2.Reviews.Any() ? "Reviews" : "No Reviews")"
+                                           Class="mud-theme-dark" 
+                            Disabled="@(!context.Item.Item2.Reviews.Any())">
                             <MudList ReadOnly="true">
                                 @{
                                     foreach (var rev in context.Item.Item2.Reviews)
                                     {
                                         <MudListItem>
-                                            <p>@rev.Text</p>
-                                            <h5>- @rev.Critic</h5>
+                                            <p><i>"@rev.Text"</i></p>
+                                            <h5>- <b>@rev.Critic</b></h5>
                                         </MudListItem>
                                     }
                                 }
@@ -176,7 +179,6 @@
         var newbatch = bookFaker.Generate(N);
         int idx = allBooks.Any() ? allBooks.Max(x => x.Item1) : 1;
         allBooks.AddRange(newbatch.Select((b,i) => Tuple.Create(idx+i,b)));
-        Console.WriteLine($"Added {N} more books");
         StateHasChanged();
     }
 
