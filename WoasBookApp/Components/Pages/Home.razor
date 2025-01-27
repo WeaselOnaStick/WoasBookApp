@@ -1,11 +1,15 @@
 ﻿@page "/"
-@inject IJSRuntime js
+@implements IDisposable
+@rendermode InteractiveServer
+
 @using WoasBookApp.Services.FakeBookGen
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using BlazorBootstrap
-@rendermode InteractiveServer
 
-@using Bogus
+@inject IJSRuntime JS
+
+
+
 @* Required *@
 <MudThemeProvider IsDarkMode="true"/>
 <MudPopoverProvider />
@@ -38,25 +42,22 @@
     </MudButtonGroup>
 
     <MudSlider 
-        T="float" ValueChanged="(val) => SetGeneratorLikes(val)" Value="@userLikes"
-        Min="0" Max="10" Step="0.1f"
-        Variant="Variant.Filled">
+    T="float" ValueChanged="(val) => SetGeneratorLikes(val)" Value="@userLikes"
+    Min="0" Max="10" Step="0.1f"
+    Variant="Variant.Filled">
         Likes: @userLikes
     </MudSlider>
 
 
     <MudNumericField 
-        T="float" ValueChanged="(val) => SetGeneratorReviews(val)" Value="@userReviews" 
-        Min="0" Max="15" Step="0.1f"
-        Variant="Variant.Outlined" class="max-width: 8rem"
-        Label="Reviews"
+    T="float" ValueChanged="(val) => SetGeneratorReviews(val)" Value="@userReviews" 
+    Min="0" Max="15" Step="0.1f"
+    Variant="Variant.Outlined" class="max-width: 8rem"
+    Label="Reviews"
     />
-    
-
-    <MudButton Variant="Variant.Filled" OnClick="()=>AddBooks(10)">Add Books</MudButton>
 </div>
 
-<div class="books-table">
+<div id="books-table">
     <MudDataGrid Items="allBooks" ReadOnly="true" Dense="true">
         <Columns>
             <HierarchyColumn T="Tuple<int, Book>"/>
@@ -103,6 +104,8 @@
 </div>
 
 @code {
+    public int bumpAmount = 10;
+
     public int userSeed = 0;
     public string generatorLocale;
 
@@ -115,9 +118,19 @@
 
     public BookFaker bookFaker;
 
+    private DotNetObjectReference<Home>? dotNetObj;
+    
     protected override void OnInitialized()
     {
         SetGeneratorLocale("en");
+        dotNetObj = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender){
+            await JS.InvokeVoidAsync("setupScrollListener", dotNetObj);
+        }
     }
 
     public void UpdateGenerator(){
@@ -153,6 +166,11 @@
         UpdateGenerator();
     }
 
+    [JSInvokable]
+    public async Task OnHitRockBottom(){
+        AddBooks(bumpAmount);
+    }
+
     void AddBooks(int N)
     {
         var newbatch = bookFaker.Generate(N);
@@ -161,4 +179,6 @@
         Console.WriteLine($"Added {N} more books");
         StateHasChanged();
     }
+
+    public void Dispose() => dotNetObj?.Dispose();
 }

@@ -119,7 +119,6 @@ namespace WoasBookApp.Services.FakeBookGen
         {
             int res = (int)Math.Floor(amt);
             res += f.Random.Float() < (amt - Math.Floor(amt)) ? 1 : 0;
-            Console.WriteLine($"GRIAL: ({amt}) => {res}");
             return res;
         }
 
