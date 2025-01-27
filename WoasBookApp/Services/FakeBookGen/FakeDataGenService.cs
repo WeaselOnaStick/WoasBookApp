@@ -87,7 +87,11 @@ namespace WoasBookApp.Services.FakeBookGen
             auxReviewTexts = new List<string>() { "UNSUPPORTED LOCALE" };
             LoadAuxReviews(locale);
 
-            Randomizer.Seed = new Random(($"{seed}{likes}{reviews}{locale}").GetHashCode());
+            Randomizer.Seed = new Random(seed);
+
+            var reviewsFaker = new Faker();
+            reviewsFaker.Random = new Randomizer(seed);
+            
 
             StrictMode(true);
             RuleFor(b => b.Title, f => f.PickRandom(auxBooks).Title);
@@ -98,8 +102,8 @@ namespace WoasBookApp.Services.FakeBookGen
             RuleFor(b => b.Year, f => f.Date.Past(100).Year);
             RuleFor(b => b.ISBN, f => f.Random.ReplaceNumbers("978-#-###-#####-#"));
             RuleFor(b => b.CoverURI, f => f.Image.PicsumUrl(200, 300));
-            RuleFor(b => b.Reviews, f => GenerateReviews(f, reviews));
             RuleFor(b => b.Likes, f => GenerateRandomIntAtleast(f, likes));
+            RuleFor(b => b.Reviews, f => GenerateReviews(reviewsFaker, reviews));
         }
 
         private List<ReviewAux> GenerateReviews(Faker f, float amt)
