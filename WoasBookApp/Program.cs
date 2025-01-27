@@ -1,4 +1,8 @@
 using WoasBookApp.Components;
+using MudBlazor.Services;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +11,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddBlazorBootstrap();
-//builder.Services.AddScoped<FakeDataGenService>();
+
+builder.Services.AddMudServices();
 
 
 var app = builder.Build();

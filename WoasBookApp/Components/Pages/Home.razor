@@ -1,65 +1,103 @@
 ﻿@page "/"
 @inject IJSRuntime js
-@using WoasBookApp.Services
+@using WoasBookApp.Services.FakeBookGen
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using BlazorBootstrap
 @rendermode InteractiveServer
 
 @using Bogus
+@* Required *@
+<MudThemeProvider IsDarkMode="true"/>
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
 
 <div class="toolbar">
-    <Dropdown Color="DropdownColor.Info">
-        <DropdownToggleButton>Locale: @_displayLocale</DropdownToggleButton>
-        <DropdownMenu>
-            @{
-                foreach (var lc in DisplayLocalesClass.DisplayLocales){
-                    <DropdownItem @onclick="(() => SetGeneratorLocale(lc.Key))" Type="DropdownItemType.Button">@lc.Value</DropdownItem>
-                }
-            }
-        </DropdownMenu>
-    </Dropdown>
+    <MudSelect Value="@generatorLocale" Label="Locale" Variant="Variant.Outlined" T="string" ValueChanged="(val) => SetGeneratorLocale(val)" Class="LocaleSelector">
+        <MudSelectItem Value="@("en")">
+            <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" height="14" class="mr-1" /> English
+        </MudSelectItem>
+        <MudSelectItem Value="@("fr")">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" height="14" class="mr-1" /> Français
+        </MudSelectItem>
+        <MudSelectItem Value="@("ru")">
+            <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" height="14" class="mr-1" /> Русский
+        </MudSelectItem>
+        <MudSelectItem Value="@("eo")">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg" height="14" class="mr-1" /> Esperanto
+        </MudSelectItem>
+    </MudSelect>
 
-    <div style="display: flex; flex-direction: row">
-        <NumberInput TValue="int" ValueChanged="((value) => SetGeneratorSeed(value))" Value="userSeed" ValueExpression="() => userSeed" />
-        <Button @onclick="(() => RandomizeSeed())" Color="ButtonColor.Info"><Icon Name="IconName.Shuffle"/></Button>
-    </div>
+    <MudButtonGroup Variant="Variant.Outlined">
+        <MudNumericField Label="Seed" T="int" ValueChanged="(val) => SetGeneratorSeed(val)" Value="@userSeed" Variant="Variant.Filled"/>
+        <MudButton OnClick="RandomizeSeed"><MudIcon Icon="@Icons.Material.Filled.Shuffle" /></MudButton>
+    </MudButtonGroup>
 
-    <Button Color="ButtonColor.Primary" @onclick="() => AddBooks(10)">Add Books</Button>
+    <MudSlider 
+        T="float" ValueChanged="(val) => SetGeneratorLikes(val)" Value="@userLikes"
+        Min="0" Max="10" Step="0.1f"
+        Variant="Variant.Filled">
+        Likes: @userLikes
+    </MudSlider>
+
+
+    <MudNumericField 
+        T="float" ValueChanged="(val) => SetGeneratorReviews(val)" Value="@userReviews" 
+        Min="0" Max="15" Step="0.1f"
+        Variant="Variant.Outlined" class="max-width: 8rem"
+        Label="Reviews"
+    />
+    
+
+    <MudButton Variant="Variant.Filled" OnClick="()=>AddBooks(10)">Add Books</MudButton>
 </div>
 
+<div class="books-table">
+    <MudDataGrid Items="allBooks" ReadOnly="true" Dense="true">
+        <Columns>
+            <HierarchyColumn T="Tuple<int, Book>"/>
+            <PropertyColumn Title="#" Property="b=> b.Item1" />
+            <PropertyColumn Title="ISBN" Property="b => b.Item2.ISBN" />
+            <PropertyColumn Title="Title" Property="b => b.Item2.Title" />
+            <PropertyColumn Title="Author(s)" Property="b => b.Item2.Author" />
+            <PropertyColumn Title="Publisher" Property='b => $"{b.Item2.Publisher}, {b.Item2.Year}"' />
 
-<Accordion>
-    <Virtualize Context="book" Items="allBooks">
-        <AccordionItem Title="@($"{book.Title} - {book.Author}")">
-            <Content>
-                <div class ="bookAccordionItem">
-                    <div class="bookItemLeft">
-                        <Image Src="@book.CoverURI" Class="rounded"/>
+        </Columns>
+        <ChildRowContent>
+            <div class="book-card-item">
+                <div class="bookItemLeft">
+                    <Image Src="@context.Item.Item2.CoverURI" Class="rounded" />
+                </div>
+                <div class="bookItemRight">
+                    <div class="bookInfoTop">
+                        <h2>@context.Item.Item2.Title</h2>
+                        <p>Author: @context.Item.Item2.Author - @context.Item.Item2.Year</p>
+                        <p>@context.Item.Item2.Genre</p>
+                        <p>@context.Item.Item2.Description</p>
                     </div>
-                    <div class="bookItemRight">
-                        <div class="bookInfoTop">
-                            <h2>@book.Title</h2>
-                            <p>Author: @book.Author - @book.Year</p>
-                            <p>@book.Genre</p>
-                            <p>@book.Description</p>
-                        </div>
-                        <div class="bookInfoBottom">
-                            <p>ISBN: @string.Join("",book.ISBN)</p>
-                        </div>
+                    <div class="bookInfoBottom">
+                        <p>ISBN: context.Item.Item2.ISBN</p>
                     </div>
                 </div>
-            </Content>
-        </AccordionItem>
-    </Virtualize>
-</Accordion>
+            </div>
+        </ChildRowContent>
+    </MudDataGrid>
+</div>
 
 @code {
     public int userSeed = 0;
-    public string generatorLocale = "en";
+    public string generatorLocale;
+
+    public float userLikes = 5;
+    public float userReviews = 5;
 
     public string _displayLocale;
 
-    public List<Book> allBooks = new List<Book>();
+    public List<Tuple<int, Book>> allBooks = new List<Tuple<int, Book>>();
 
     public BookFaker bookFaker;
 
@@ -70,7 +108,7 @@
 
     public void UpdateGenerator(){
         allBooks.Clear();
-        bookFaker = new BookFaker(userSeed, generatorLocale);
+        bookFaker = new BookFaker(userSeed, generatorLocale, userLikes, userReviews);
         StateHasChanged();
         AddBooks(30);
     }
@@ -91,9 +129,21 @@
         UpdateGenerator();
     }
 
+    public void SetGeneratorLikes(float newLikes){
+        userLikes = newLikes;
+        UpdateGenerator();
+    }
+
+    public void SetGeneratorReviews(float newReviews){
+        userReviews = (float)Math.Round(newReviews,1);
+        UpdateGenerator();
+    }
+
     void AddBooks(int N)
     {
-        allBooks.AddRange(bookFaker.Generate(N));
+        var newbatch = bookFaker.Generate(N);
+        int idx = allBooks.Any() ? allBooks.Max(x => x.Item1) : 1;
+        allBooks.AddRange(newbatch.Select((b,i) => Tuple.Create(idx+i,b)));
         Console.WriteLine($"Added {N} more books");
         StateHasChanged();
     }
