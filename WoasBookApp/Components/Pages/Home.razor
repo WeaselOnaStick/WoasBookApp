@@ -3,11 +3,8 @@
 @rendermode InteractiveServer
 
 @using WoasBookApp.Services.FakeBookGen
-@using Microsoft.AspNetCore.Components.Web.Virtualization
 
 @inject IJSRuntime JS
-
-
 
 @* Required *@
 <MudThemeProvider IsDarkMode="true"/>
@@ -54,6 +51,8 @@
     Variant="Variant.Outlined" class="max-width: 8rem"
     Label="Reviews"
     />
+
+
 </div>
 
 <div id="books-table">
