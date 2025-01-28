@@ -1,4 +1,5 @@
 ﻿@page "/"
+<PageTitle>WoasBookApp</PageTitle>
 @implements IDisposable
 @rendermode InteractiveServer
 
@@ -35,7 +36,7 @@
 
     <MudSlider 
     T="float" ValueChanged="(val) => SetGeneratorLikes(val)" Value="@userLikes"
-    Min="0" Max="10" Step="0.1f"
+    Min="0" Max="10" Step="0.1f" Immediate="true"
     Variant="Variant.Filled">
         Likes: @userLikes
     </MudSlider>
@@ -43,7 +44,7 @@
 
     <MudNumericField 
     T="float" ValueChanged="(val) => SetGeneratorReviews(val)" Value="@userReviews" 
-    Min="0" Max="15" Step="0.1f"
+    Min="0" Max="15" Step="0.1f" Immediate="true"
     Variant="Variant.Outlined" class="max-width: 8rem"
     Label="Reviews"
     />
@@ -100,6 +101,14 @@
         </ChildRowContent>
     </MudDataGrid>
 </div>
+
+@{
+    if(!allBooks.Any()){
+        <center>
+            <MudProgressCircular Color="Color.Secondary" Indeterminate="true" style="margin-top: 1rem"/>
+        </center>
+    }
+}
 
 @code {
     public int bumpAmount = 10;
@@ -182,15 +191,15 @@
 
     public void SetGeneratorLikes(float newLikes)
     {
+        userLikes = (float)Math.Round(newLikes,2);
         UpdateFieldInplace(UpdatableField.Likes);
-        userLikes = newLikes;
         StateHasChanged();
     }
 
     public void SetGeneratorReviews(float newReviews)
     {
+        userReviews = (float)Math.Round(newReviews,2);
         UpdateFieldInplace(UpdatableField.Reviews);
-        userReviews = newReviews;
         StateHasChanged();
     }
 
