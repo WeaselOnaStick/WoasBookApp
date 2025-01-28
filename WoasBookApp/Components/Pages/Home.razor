@@ -18,18 +18,14 @@
 
 <div class="toolbar">
     <MudSelect Value="@generatorLocale" Label="Locale" Variant="Variant.Outlined" T="string" ValueChanged="(val) => SetGeneratorLocale(val)" Class="LocaleSelector">
-        <MudSelectItem Value="@("en")">
-            <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" height="14" class="mr-1" /> English
-        </MudSelectItem>
-        <MudSelectItem Value="@("fr")">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" height="14" class="mr-1" /> Français
-        </MudSelectItem>
-        <MudSelectItem Value="@("ru")">
-            <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" height="14" class="mr-1" /> Русский
-        </MudSelectItem>
-        <MudSelectItem Value="@("eo")">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg" height="14" class="mr-1" /> Esperanto
-        </MudSelectItem>
+        @{
+            foreach (var locale in SupportedLocales.LocalesInfo){
+                <MudSelectItem Value="@(locale.Key)">
+                    <img src="@locale.Value.FlagURL" height="14" class="mr-1" />@locale.Value.DisplayName
+                </MudSelectItem>
+            }
+        }
+
     </MudSelect>
 
     <MudButtonGroup Variant="Variant.Outlined">
@@ -56,7 +52,7 @@
 </div>
 
 <div id="books-table">
-    <MudDataGrid Items="allBooks" ReadOnly="true" Dense="true" Breakpoint="Breakpoint.None">
+    <MudDataGrid Items="allBooks" ReadOnly="true" Dense="true" Breakpoint="Breakpoint.None" SortMode="SortMode.None">
         <Columns>
             <HierarchyColumn T="Tuple<int, Book>"/>
             <PropertyColumn Title="#" Property="b=> b.Item1" Style="max-width: 3rem"/>
@@ -84,8 +80,8 @@
                     </div>
                     <MudExpansionPanels Outlined="true">
                         <MudExpansionPanel Text="@(context.Item.Item2.Reviews.Any() ? "Reviews" : "No Reviews")"
-                                           Class="mud-theme-dark" 
-                            Disabled="@(!context.Item.Item2.Reviews.Any())">
+                        Class="mud-theme-dark" 
+                        Disabled="@(!context.Item.Item2.Reviews.Any())">
                             <MudList ReadOnly="true">
                                 @{
                                     foreach (var rev in context.Item.Item2.Reviews)
@@ -121,7 +117,7 @@
     public BookFaker bookFaker;
 
     private DotNetObjectReference<Home>? dotNetObj;
-    
+
     protected override void OnInitialized()
     {
         SetGeneratorLocale("en");
@@ -137,14 +133,15 @@
 
     public void UpdateGenerator(){
         allBooks.Clear();
-        bookFaker = new BookFaker(userSeed, userLikes, userReviews, generatorLocale);
+        bookFaker = new BookFaker(userSeed, JS, userLikes, userReviews, generatorLocale);
         StateHasChanged();
         AddBooks(30);
     }
 
     public void SetGeneratorLocale(string locale){
         generatorLocale = locale;
-        _displayLocale = DisplayLocalesClass.DisplayLocales[locale];
+        var res = SupportedLocales.LocalesInfo.TryGetValue(locale, out var locData);
+        _displayLocale = res ? locData.DisplayName : "";
         UpdateGenerator();
     }
 
