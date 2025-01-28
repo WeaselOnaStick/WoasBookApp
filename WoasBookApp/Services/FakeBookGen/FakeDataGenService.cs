@@ -120,6 +120,7 @@ namespace WoasBookApp.Services.FakeBookGen
         {
             var res = new List<Book>();
             var faker = new Faker();
+            Likes = newAmt;
             faker.Random = new Randomizer(seed);
             foreach (var book in books)
             {
@@ -133,6 +134,7 @@ namespace WoasBookApp.Services.FakeBookGen
         {
             var res = new List<Book>();
             var tfaker = new Faker();
+            ReviewsAmount = newAmt;
             tfaker.Random = new Randomizer(seed);
             foreach (var book in books)
             {
