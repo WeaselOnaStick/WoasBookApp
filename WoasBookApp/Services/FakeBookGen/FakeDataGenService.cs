@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 
 using Microsoft.JSInterop;
+using System.ComponentModel;
 
 namespace WoasBookApp.Services.FakeBookGen
 {
@@ -68,60 +69,93 @@ namespace WoasBookApp.Services.FakeBookGen
     {
         private readonly IJSRuntime _js;
 
+        private Faker f;
+        private Faker reviewsFaker;
+        private int Seed;
+
+        private float Likes;
+        private float ReviewsAmount;
+
         public BookFaker(int seed, IJSRuntime jS, float likes, float reviews, string locale = "en")
         {
             _js = jS;
 
-            _js.InvokeVoidAsync("console.log", "Hello from Faker!");
-            _js.InvokeVoidAsync("WoasFunc");
-
             Randomizer.Seed = new Random(seed);
 
             Locale = locale;
+            Seed = seed;
 
-            var reviewsFaker = new Faker();
+            f = new Faker(locale);
+            f.Random = new Randomizer(seed);
+
+            reviewsFaker = new Faker(locale);
             reviewsFaker.Random = new Randomizer(seed);
-            
 
-            StrictMode(true);
-            RuleFor(b => b.Title, f => locale == "en" ? f.WaffleTitle() : $"{f.Hacker.IngVerb()} {f.Hacker.Adjective()} {f.Hacker.Noun()}");
-            RuleFor(b => b.Description, f => locale == "en"? f.WaffleText() : f.Lorem.Paragraph());
-            RuleFor(b => b.Author, f => f.Name.FullName());
-            RuleFor(b => b.Genre, f => f.Commerce.ProductAdjective());
-            RuleFor(b => b.Publisher, f => f.Company.CompanyName());
-            RuleFor(b => b.Year, f => f.Date.Past(100).Year);
-            RuleFor(b => b.ISBN, f => f.Random.ReplaceNumbers("978-#-###-#####-#"));
-            RuleFor(b => b.CoverURI, f => f.Image.PicsumUrl(200, 300));
-            RuleFor(b => b.Likes, f => GenerateRandomIntAtleast(f, likes));
-            RuleFor(b => b.Reviews, f => GenerateReviews(reviewsFaker, reviews));
+            Likes = likes;
+            ReviewsAmount = reviews;
         }
 
-        public void RegenerateLikes(List<Book> books, float newAmt, int seed)
+        public async Task<List<Book>> GenerateAsync(int N)
         {
+            var books = new List<Book>();
+            for (int i = 0; i < N; i++)
+            {
+                var book = new Book();
+                book.Title = await _js.InvokeAsync<string>("GenerateFakeBookInfo", Seed + f.Random.Int(), Locale, "title");
+                book.Description = Locale == "en" ? f.WaffleText() : await _js.InvokeAsync<string>("GenerateFakeBookInfo", Seed + f.Random.Int(), Locale, "words");
+                book.Author = f.Name.FullName();
+                book.Genre = await _js.InvokeAsync<string>("GenerateFakeBookInfo", Seed + f.Random.Int(), Locale, "genre");
+                book.Publisher = await _js.InvokeAsync<string>("GenerateFakeBookInfo", Seed + f.Random.Int(), Locale, "publisher");
+                book.Year = f.Date.Past(100).Year;
+                book.ISBN = f.Random.ReplaceNumbers("978-#-###-#####-#");
+                book.CoverURI = f.Image.PicsumUrl(200, 300);
+                book.Likes = GenerateRandomIntAtleast(f, Likes);
+                book.Reviews = GenerateReviews(reviewsFaker, ReviewsAmount);
+                books.Add(book);
+            }
+            return books;
+        }
+
+        public List<Book> RegenerateLikes(List<Book> books, float newAmt, int seed)
+        {
+            var res = new List<Book>();
             var faker = new Faker();
             faker.Random = new Randomizer(seed);
             foreach (var book in books)
+            {
                 book.Likes = GenerateRandomIntAtleast(faker, newAmt);
+                res.Add(book);
+            }
+            return res;
         }
 
-        public void RegenerateReviews(List<Book> books, float newAmt, int seed)
+        public List<Book> RegenerateReviews(List<Book> books, float newAmt, int seed)
         {
-            var faker = new Faker();
-            faker.Random = new Randomizer(seed);
+            var res = new List<Book>();
+            var tfaker = new Faker();
+            tfaker.Random = new Randomizer(seed);
             foreach (var book in books)
-                book.Reviews = GenerateReviews(faker, GenerateRandomIntAtleast(faker, newAmt));
+            {
+                book.Reviews = GenerateReviews(tfaker, GenerateRandomIntAtleast(tfaker, newAmt));
+                res.Add(book);
+            }
+            return res;
         }
 
         private List<Review> GenerateReviews(Faker f, float amt)
         {
             var res = new List<Review>();
             var reviewsAmt = GenerateRandomIntAtleast(f, amt);
-            res.AddRange(
-                Enumerable.Range(0, reviewsAmt).
-                Select(_ => new Review { 
-                    Critic = f.Name.FullName(), 
-                    Text = f.Rant.Review()
-                }));
+            for (int i = 0; i < reviewsAmt; i++)
+            {
+                var newCritic = reviewsFaker.Name.FullName();
+                var newReview = reviewsFaker.Rant.Review();
+                res.Add(new Review()
+                {
+                    Critic = newCritic,
+                    Text = newReview,
+                });
+            }
             return res;
         }
 

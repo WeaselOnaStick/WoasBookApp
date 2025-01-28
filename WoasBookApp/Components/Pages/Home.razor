@@ -105,7 +105,7 @@
     public int bumpAmount = 10;
 
     public int userSeed = 0;
-    public string generatorLocale;
+    public string generatorLocale = "en";
 
     public float userLikes = 5;
     public float userReviews = 5;
@@ -120,7 +120,6 @@
 
     protected override void OnInitialized()
     {
-        SetGeneratorLocale("en");
         dotNetObj = DotNetObjectReference.Create(this);
     }
 
@@ -128,41 +127,71 @@
     {
         if (firstRender){
             await JS.InvokeVoidAsync("setupScrollListener", dotNetObj);
+            bookFaker = new BookFaker(userSeed, JS, userLikes, userReviews, generatorLocale);
+            SetGeneratorLocale("en");
         }
     }
 
-    public void UpdateGenerator(){
+    public async Task UpdateGenerator(){
         allBooks.Clear();
         bookFaker = new BookFaker(userSeed, JS, userLikes, userReviews, generatorLocale);
-        StateHasChanged();
-        AddBooks(30);
+        await AddBooks(30);
     }
 
-    public void SetGeneratorLocale(string locale){
+
+    public async Task SetGeneratorLocale(string locale){
         generatorLocale = locale;
         var res = SupportedLocales.LocalesInfo.TryGetValue(locale, out var locData);
         _displayLocale = res ? locData.DisplayName : "";
-        UpdateGenerator();
+        await UpdateGenerator();
     }
 
-    public void SetGeneratorSeed(int seed){
+    public async Task SetGeneratorSeed(int seed)
+    {
         userSeed = seed;
-        UpdateGenerator();
+        await UpdateGenerator();
     }
 
-    public void RandomizeSeed(){
+    public async Task RandomizeSeed()
+    {
         userSeed = (new Random()).Next();
-        UpdateGenerator();
+        await UpdateGenerator();
     }
 
-    public void SetGeneratorLikes(float newLikes){
+    public enum UpdatableField{
+        Reviews,
+        Likes
+    }
+
+    public void UpdateFieldInplace(UpdatableField field)
+    {
+        var newBooksUnindexed = new List<Book>();
+        switch (field)
+        {
+            case UpdatableField.Likes:
+                newBooksUnindexed = bookFaker.RegenerateLikes(allBooks.Select(b=>b.Item2).ToList(), userLikes, userSeed);
+                break;
+            case UpdatableField.Reviews:
+                newBooksUnindexed = bookFaker.RegenerateReviews(allBooks.Select(b => b.Item2).ToList(), userReviews, userSeed);
+                break;
+        }
+        allBooks = newBooksUnindexed.Select((b, i) => new Tuple<int, Book>(i, b)).ToList();
+        StateHasChanged();
+    }
+
+
+    public void SetGeneratorLikes(float newLikes)
+    {
+        UpdateFieldInplace(UpdatableField.Likes);
         userLikes = newLikes;
-        UpdateGenerator();
+        StateHasChanged();
     }
 
-    public void SetGeneratorReviews(float newReviews){
-        userReviews = (float)Math.Round(newReviews,1);
-        UpdateGenerator();
+    public void SetGeneratorReviews(float newReviews)
+    {
+        UpdateFieldInplace(UpdatableField.Reviews);
+        userReviews = newReviews;
+        StateHasChanged();
     }
 
     [JSInvokable]
@@ -170,9 +199,9 @@
         AddBooks(bumpAmount);
     }
 
-    void AddBooks(int N)
+    async Task AddBooks(int N)
     {
-        var newbatch = bookFaker.Generate(N);
+        var newbatch = await bookFaker.GenerateAsync(N);
         int idx = allBooks.Any() ? allBooks.Max(x => x.Item1) : 1;
         allBooks.AddRange(newbatch.Select((b,i) => Tuple.Create(idx+i,b)));
         StateHasChanged();

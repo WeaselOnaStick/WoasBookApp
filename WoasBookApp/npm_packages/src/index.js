@@ -1,23 +1,32 @@
-﻿import { faker, Faker, es } from '@faker-js/faker';
+﻿import { faker, Faker, fakerPT_BR, fakerPL, fakerEN } from '@faker-js/faker';
 
-window.WoasFunc = function () {
-    console.log("Hello, JS world!");
-    // const { faker } = require('@faker-js/faker');
 
-    faker.seed(1234);
-
-    console.log(faker.person.fullName());
-    faker.person.firstName(); // 'John'
-    faker.person.lastName(); // 'Doe'
-    // const { Faker, es } = require('@faker-js/faker');
-
-    // create a Faker instance with only es data and no en fallback (=> smaller bundle size)
-    const customFaker = new Faker({ locale: [es] });
-    customFaker.seed(1234);
-
-    customFaker.person.firstName(); // 'Javier'
-    customFaker.person.lastName(); // 'Ocampo Corrales'
-
-    customFaker.music.genre(); // throws Error as this data is not available in `es`
-
+window.GenerateFakeBookInfo = function (seed, locale, info) {
+    let newFaker;
+    switch (locale) {
+        case 'en':
+            newFaker = fakerEN;
+            break;
+        case 'pt_BR':
+            newFaker = fakerPT_BR
+            break;
+        case 'pl':
+            newFaker = fakerPL
+            break;
+    }
+    newFaker.seed(seed);
+    switch (info) {
+        case 'title':
+            return newFaker.book.title();
+        case 'author':
+            return newFaker.book.author();
+        case 'genre':
+            return newFaker.book.genre();
+        case 'publisher':
+            return newFaker.book.publisher();
+        case 'words':
+            return newFaker.word.words({ count: { min: 10, max: 30 } })
+        case 'fullname':
+            return newFaker.person.fullName();
+    }
 }
